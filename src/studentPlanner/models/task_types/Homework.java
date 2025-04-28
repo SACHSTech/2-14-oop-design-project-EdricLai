@@ -18,8 +18,9 @@ public class Homework extends Task {
     public Homework(String name, LocalDateTime dueDate, Priority priority, int problemCount) {
         super(name, dueDate, priority);
         this.problemCount = problemCount;
+        this.problemsSolved = 0;
     }
-
+    
     // getters
     public int getProblemCount() {
         return problemCount;
