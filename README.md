@@ -7,4 +7,4 @@ See instructions [here](INSTRUCTIONS.md) for details.
 ![studentPlannerUML](images/uml/png/studentPlanner.png)  
 
 ## Summary
-*Write a brief summary that describes the real-world system you are modelling in your design.*
+This design represents a student planner or study assistant that helps students manage their courses and tasks. It organizes assignments by due date and priority and offers additional tools to provide information about specific assignments.
