@@ -3,7 +3,8 @@
 
 See instructions [here](INSTRUCTIONS.md) for details.
 
-*INSERT UML CLASS DIAGRAM HERE*  
+*UML Diagram for Student Planner*
+![studentPlannerUML](images/uml/png/studentPlanner.png)  
 
 ## Summary
 *Write a brief summary that describes the real-world system you are modelling in your design.*
