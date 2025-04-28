@@ -21,7 +21,7 @@ public abstract class Task {
         this.priority = priority;
         this.isCompleted = false;
     }
-    
+
     // getters
     public String getName() {
         return name;
@@ -49,7 +49,17 @@ public abstract class Task {
     public void markIncomplete() {
         isCompleted = false;
     }
+    
+    // helper methods
+    public String getInfo() {
+        return name + " | Due: " + dueDate + " | Priority: " + priority + " | Completed: " + isCompleted;
+    }
 
     // abstract methods
-    public abstract void getSummary();
+    public abstract String getSummary();
+
+    // toString
+    public String toString() {
+        return getInfo();
+    }
 }

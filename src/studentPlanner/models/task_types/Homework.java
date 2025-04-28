@@ -40,7 +40,7 @@ public class Homework extends Task {
     }
 
     // abstract methods
-    public void getSummary() {
-        // code
+    public String getSummary() {
+        return super.getInfo() + " | Homework with " + problemsSolved + " problems solved out of " + problemCount;
     }
 }

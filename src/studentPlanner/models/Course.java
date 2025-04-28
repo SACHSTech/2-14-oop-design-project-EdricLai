@@ -11,7 +11,7 @@ public class Course {
     // fields
     private String code;
     private List<Task> tasks;
-    
+
     // constructor
     public Course(String code) {
         this.code = code;
@@ -29,5 +29,10 @@ public class Course {
     // setters
     public void addTask(Task task) {
         tasks.add(task);
+    }
+    
+    // toString
+    public String toString() {
+        return "Code: " + code;
     }
 }

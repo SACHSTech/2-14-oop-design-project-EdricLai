@@ -39,7 +39,7 @@ public class Test extends Task {
     }
 
     // abstract methods
-    public void getSummary() {
-        // code
+    public String getSummary() {
+        return super.getInfo() + "Test with lessons: " + String.join(", ", lessonsCovered);
     }
 }

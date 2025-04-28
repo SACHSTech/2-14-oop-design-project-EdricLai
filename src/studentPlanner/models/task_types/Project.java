@@ -34,7 +34,7 @@ public class Project extends Task {
     }
 
     // abstract methods
-    public void getSummary() {
-        // code
+    public String getSummary() {
+        return super.getInfo() + "| Project with members: " + String.join(", ", groupMembers);
     }
 }
