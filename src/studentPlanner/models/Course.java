@@ -1,3 +1,6 @@
+package studentPlanner.models;
+
+// imports
 import java.util.*;
 
 /**
@@ -9,6 +12,12 @@ public class Course {
     private String code;
     private List<Task> tasks;
 
+    // constructor
+    public Course(String code, List<Task> tasks) {
+        this.code = code;
+        this.tasks = tasks;
+    }
+
     // getters
     public String getCode() {
         return code;
@@ -16,7 +25,7 @@ public class Course {
     public List<Task> getTasks() {
         return tasks;
     }
-    
+
     // setters
     public void addTask(Task task) {
         tasks.add(task);

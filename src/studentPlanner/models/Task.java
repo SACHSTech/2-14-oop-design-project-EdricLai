@@ -1,3 +1,6 @@
+package studentPlanner.models;
+
+// imports
 import java.time.LocalDateTime;
 
 /**
