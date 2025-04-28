@@ -19,8 +19,9 @@ public abstract class Task {
         this.name = name;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.isCompleted = false;
     }
-
+    
     // getters
     public String getName() {
         return name;

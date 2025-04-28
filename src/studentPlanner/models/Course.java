@@ -11,11 +11,11 @@ public class Course {
     // fields
     private String code;
     private List<Task> tasks;
-
+    
     // constructor
-    public Course(String code, List<Task> tasks) {
+    public Course(String code) {
         this.code = code;
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>();
     }
 
     // getters

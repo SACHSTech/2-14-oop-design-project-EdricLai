@@ -15,9 +15,9 @@ public class Test extends Task {
     private List<String> lessonsCovered;
 
     // constructor
-    public Test(String name, LocalDateTime dueDate, Priority priority, List<String> lessonsCovered) {
+    public Test(String name, LocalDateTime dueDate, Priority priority) {
         super(name, dueDate, priority);
-        this.lessonsCovered = lessonsCovered;
+        this.lessonsCovered = new ArrayList<>();
     }
 
     // getters

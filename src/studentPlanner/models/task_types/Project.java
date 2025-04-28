@@ -15,9 +15,9 @@ public class Project extends Task {
     private List<String> groupMembers;
 
     // constructor
-    public Project (String name, LocalDateTime dueDate, Priority priority, List<String> groupMembers) {
+    public Project (String name, LocalDateTime dueDate, Priority priority) {
         super(name, dueDate, priority);
-        this.groupMembers = groupMembers;
+        this.groupMembers = new ArrayList<>();
     }
 
     // getters
