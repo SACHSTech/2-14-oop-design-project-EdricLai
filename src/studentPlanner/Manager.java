@@ -8,7 +8,8 @@ import studentPlanner.models.*;
 import studentPlanner.models.task_types.*;
 
 /**
- * studentPlanner manager
+ * Represents a manager for a list of courses
+ * Core student planner logic
  * @author Edric
 */
 public class Manager {
