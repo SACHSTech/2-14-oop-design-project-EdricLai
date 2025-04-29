@@ -47,6 +47,7 @@ public class Manager {
      * @param date filters tasks due before this date
      * @param priority filters by priority
      * @param isCompleted filters by completion status
+     * @return a list of tasks matching the filters
     */
     public List<Task> filterTasks(String code, LocalDateTime date, Priority priority, boolean isCompleted) {
         // initialize
@@ -77,13 +78,15 @@ public class Manager {
      * 2. Due date (earliest first)
      * 3. Homework (lower problems solved ratio first)
      * 4. Test (comprehensive tests first)
+     * @param code selected course to prioritize tasks
+     * @return a list of tasks with their priorities set automatically
      */
     public List<Task> getNewPrioritizedTasks(String code) {
         // initialize
         Course course = getCourseByCode(code);
         if (course == null) return new ArrayList<>();
         List<Task> prioritizedTasks = new ArrayList<>(course.getTasks());
-        
+
         /*
          * t1 and t1 represent the pair of elements being compared
          * return negative = t1 comes before t2
@@ -129,6 +132,25 @@ public class Manager {
             return t1.getPriority().compareTo(t2.getPriority());
         });
 
+        // after sorting, divide the list into thirds and prioritize
+        for (int i = 0; i < prioritizedTasks.size(); i++) {
+            Task task = prioritizedTasks.get(i);
+            double taskPositionRatio = (double) i / prioritizedTasks.size();
+
+            // if task is top third of the list
+            if (taskPositionRatio < 1.0 / 3) {
+                task.setPriority(Priority.HIGH);
+            }
+            // if task is middle third of the list
+            else if (taskPositionRatio < 2.0 / 3) {
+                task.setPriority(Priority.MEDIUM);
+            }
+            // if task is bottom third of the list
+            else {
+                task.setPriority(Priority.LOW);
+            }
+        }
+        
         return prioritizedTasks;
     }
 }
