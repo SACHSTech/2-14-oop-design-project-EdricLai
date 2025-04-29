@@ -42,6 +42,10 @@ public class Homework extends Task {
 
     // abstract methods
     public String getSummary() {
-        return super.getInfo() + " | Homework with " + problemsSolved + " problems solved out of " + problemCount;
+        String taskInfo = super.getInfo();
+        return String.format(
+            "%s\nProblems Solved: %d / %d",
+            taskInfo, problemsSolved, problemCount
+        );
     }
 }

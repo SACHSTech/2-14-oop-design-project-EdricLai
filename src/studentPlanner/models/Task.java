@@ -52,12 +52,18 @@ public abstract class Task {
     
     // helper methods
     public String getInfo() {
-        return name + " | Due: " + dueDate + " | Priority: " + priority + " | Completed: " + isCompleted;
+        return String.format(
+            "%s\nDue: %-20s | Priority: %-7s | Completed: %-5s",
+            name,
+            dueDate,
+            priority,
+            isCompleted ? "Yes" : "No"
+        );
     }
 
     // abstract methods
     public abstract String getSummary();
-
+    
     // toString
     public String toString() {
         return getInfo();

@@ -42,6 +42,11 @@ public class Test extends Task {
 
     // abstract methods
     public String getSummary() {
-        return super.getInfo() + " | Test with lessons: " + String.join(", ", lessonsCovered);
+        String taskInfo = super.getInfo();
+        String lessonsInfo = lessonsCovered.isEmpty() ? "No lessons" : String.join(", ", lessonsCovered);
+        return String.format(
+            "%s\nLessons Covered: %s", 
+            taskInfo, lessonsInfo
+        );
     }
 }

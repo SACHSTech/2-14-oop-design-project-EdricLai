@@ -34,9 +34,14 @@ public class Project extends Task {
             groupMembers.remove(member);
         }
     }
-
+    
     // abstract methods
     public String getSummary() {
-        return super.getInfo() + " | Project with members: " + String.join(", ", groupMembers);
+        String taskInfo = super.getInfo();
+        String groupInfo = groupMembers.isEmpty() ? "No members" : String.join(", ", groupMembers);
+        return String.format(
+            "%s\nGroup Members: %s", 
+            taskInfo, groupInfo
+        );
     }
 }
