@@ -17,11 +17,11 @@ public class InteractiveSystem {
     private Scanner scanner;
 
     // constructor
-    public InteractiveSystem() {
-        this.manager = new Manager();
+    public InteractiveSystem(Manager manager) {
+        this.manager = manager;
         this.scanner = new Scanner(System.in);
     }
-
+    
     // runs interactive system
     public void run() {
         // menu loop
@@ -31,9 +31,10 @@ public class InteractiveSystem {
             System.out.println("1. Add Course");
             System.out.println("2. Add Task");
             System.out.println("3. View Tasks");
-            System.out.println("4. Prioritize Tasks");
-            System.out.println("5. Adjust tasks");
-            System.out.println("6. Exit");
+            System.out.println("4. View Filtered Tasks");
+            System.out.println("5. Prioritize Tasks");
+            System.out.println("6. Adjust tasks");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
@@ -51,12 +52,15 @@ public class InteractiveSystem {
                     viewTasks();
                     break;
                 case 4:
-                    prioritizeTasks();
+                    viewFilteredTasks();
                     break;
                 case 5:
-                    adjustTasks();
+                    prioritizeTasks();
                     break;
                 case 6:
+                    adjustTasks();
+                    break;
+                case 7:
                     System.out.println("Exiting.");
                     return;
                 default:
@@ -90,7 +94,7 @@ public class InteractiveSystem {
             return;
         }
 
-        // get user input
+        // get user inputs
         System.out.print("Enter task name: ");
         String taskName = scanner.nextLine();
 
@@ -129,7 +133,7 @@ public class InteractiveSystem {
     // viewTasks method
     private void viewTasks() {
         // get user input
-        System.out.print("Enter course code to view tasks: ");
+        System.out.print("Enter course code to view all tasks: ");
         String courseCode = scanner.nextLine();
         Course course = manager.getCourseByCode(courseCode);
 
@@ -143,6 +147,47 @@ public class InteractiveSystem {
         System.out.println("\nTasks for Course: " + course.getCode());
         for (Task task : course.getTasks()) {
             System.out.println(task.getSummary());
+        }
+    }
+
+    // viewFilteredTasks method
+    private void viewFilteredTasks() {
+        // get user input
+        System.out.print("Enter course code to filter tasks: ");
+        String courseCode = scanner.nextLine();
+        Course course = manager.getCourseByCode(courseCode);
+
+        // if course code does not exist
+        if (course == null) {
+            System.out.println("Course not found!");
+            return;
+        }
+
+        // get user inputs
+        System.out.print("Enter date (YYYY-MM-DD HH:MM or press Enter to skip): ");
+        String dueDateStr = scanner.nextLine();
+        LocalDateTime dueDate = dueDateStr.isEmpty() ? null : LocalDateTime.parse(dueDateStr.replace(" ", "T"));
+
+        System.out.print("Enter priority (LOW, MEDIUM, HIGH or press Enter to skip): ");
+        String priorityStr = scanner.nextLine();
+        Priority priority = priorityStr.isEmpty() ? null : Priority.valueOf(priorityStr.toUpperCase());
+
+        System.out.print("Enter completion status (true/false or press Enter to skip): ");
+        String isCompletedStr = scanner.nextLine();
+        boolean isCompleted = isCompletedStr.isEmpty() ? false : Boolean.parseBoolean(isCompletedStr);
+
+        // get filtered tasks
+        List<Task> filteredTasks = manager.filterTasks(courseCode, dueDate, priority, isCompleted);
+
+        // confirmation message
+        if (filteredTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        }
+        else {
+            System.out.println(filteredTasks.size() + " task(s) found matching the criteria:");
+            for (Task task : filteredTasks) {
+                System.out.println(task.getSummary());
+            }
         }
     }
 
@@ -169,7 +214,7 @@ public class InteractiveSystem {
             System.out.println(task.getSummary());
         }
     }
-
+    
     // adjustTasks method
     private void adjustTasks() {
         // code

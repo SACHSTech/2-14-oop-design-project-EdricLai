@@ -18,7 +18,7 @@ public class Manager {
 
     // constructor
     public Manager() {
-        courses = new ArrayList<>();
+        this.courses = new ArrayList<>();
     }
 
     // setters
@@ -89,7 +89,7 @@ public class Manager {
         List<Task> prioritizedTasks = new ArrayList<>(course.getTasks());
 
         /*
-         * t1 and t1 represent the pair of elements being compared
+         * t1 and t2 represent the pair of elements being compared
          * return negative = t1 comes before t2
          * return positive = t1 comes after t2
          * return 0 = no change in order
@@ -132,7 +132,7 @@ public class Manager {
             // 5. otherwise, fallback: compare by initial priority
             return t1.getPriority().compareTo(t2.getPriority());
         });
-
+        
         // after sorting, divide the list into thirds and prioritize
         for (int i = 0; i < prioritizedTasks.size(); i++) {
             Task task = prioritizedTasks.get(i);

@@ -2,7 +2,11 @@ package studentPlanner;
 
 public class Main {
     public static void main(String[] args) {
-        InteractiveSystem interactiveSystem = new InteractiveSystem();
+        // creates new system
+        Manager manager = new Manager();
+        InteractiveSystem interactiveSystem = new InteractiveSystem(manager);
+
+        // runs interactive system
         interactiveSystem.run();
     }
 }
