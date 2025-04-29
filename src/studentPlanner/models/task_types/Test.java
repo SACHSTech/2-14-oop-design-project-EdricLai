@@ -30,16 +30,18 @@ public class Test extends Task {
         lessonsCovered.add(lesson);
     }
     public void removeLesson(String lesson) {
-        lessonsCovered.remove(lesson);
+        if (lessonsCovered.contains(lesson)) {
+            lessonsCovered.remove(lesson);
+        }
     }
 
     // helper methods
     public boolean isComprehensive() {
-        return lessonsCovered.size() >= 5 ? true : false;
+        return lessonsCovered.size() >= 5;
     }
 
     // abstract methods
     public String getSummary() {
-        return super.getInfo() + "Test with lessons: " + String.join(", ", lessonsCovered);
+        return super.getInfo() + " | Test with lessons: " + String.join(", ", lessonsCovered);
     }
 }

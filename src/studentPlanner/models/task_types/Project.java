@@ -30,11 +30,13 @@ public class Project extends Task {
         groupMembers.add(member);
     }
     public void removeMember(String member) {
-        groupMembers.remove(member);
+        if (groupMembers.contains(member)) {
+            groupMembers.remove(member);
+        }
     }
 
     // abstract methods
     public String getSummary() {
-        return super.getInfo() + "| Project with members: " + String.join(", ", groupMembers);
+        return super.getInfo() + " | Project with members: " + String.join(", ", groupMembers);
     }
 }

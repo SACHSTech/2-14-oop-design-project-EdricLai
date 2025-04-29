@@ -29,7 +29,7 @@ public class Homework extends Task {
         return problemsSolved;
     }
     public double getCompletionRatio() {
-        return problemCount == 0 ? 0 : problemsSolved / problemCount;
+        return problemCount == 0 ? 0 : (double) problemsSolved / problemCount;
     }
 
     // setters
