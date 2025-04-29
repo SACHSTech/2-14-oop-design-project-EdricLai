@@ -36,6 +36,16 @@ public abstract class Task {
         return isCompleted;
     }
 
+    public String getInfo() {
+        return String.format(
+            "%s\nDue: %-20s | Priority: %-7s | Completed: %-5s",
+            name,
+            dueDate,
+            priority,
+            isCompleted ? "Yes" : "No"
+        );
+    }
+
     // setters
     public void setDueDate(LocalDateTime inDueDate) {
         dueDate = inDueDate;
@@ -48,17 +58,6 @@ public abstract class Task {
     }
     public void markIncomplete() {
         isCompleted = false;
-    }
-    
-    // helper methods
-    public String getInfo() {
-        return String.format(
-            "%s\nDue: %-20s | Priority: %-7s | Completed: %-5s",
-            name,
-            dueDate,
-            priority,
-            isCompleted ? "Yes" : "No"
-        );
     }
 
     // abstract methods

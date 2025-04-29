@@ -132,7 +132,7 @@ public class Manager {
             // 5. otherwise, fallback: compare by initial priority
             return t1.getPriority().compareTo(t2.getPriority());
         });
-        
+
         // after sorting, divide the list into thirds and prioritize
         for (int i = 0; i < prioritizedTasks.size(); i++) {
             Task task = prioritizedTasks.get(i);

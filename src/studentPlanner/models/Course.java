@@ -26,6 +26,17 @@ public class Course {
         return tasks;
     }
 
+    public Task getTaskByName(String name) {
+        // return task by name
+        for (Task task : tasks) {
+            if (task.getName().equals(name)) {
+                return task;
+            }
+        }
+        // return null if no task found
+        return null;
+    }
+
     // setters
     public void addTask(Task task) {
         tasks.add(task);
