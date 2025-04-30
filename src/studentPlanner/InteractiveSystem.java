@@ -26,102 +26,74 @@ public class InteractiveSystem {
     public void run() {
         // menu loop
         while (true) {
-            // prints menu options
-            System.out.println("\nStudent Planner:");
-            System.out.println("1. Add Course");
-            System.out.println("2. Add Task");
-            System.out.println("3. View Tasks");
-            System.out.println("4. View Filtered Tasks");
-            System.out.println("5. Prioritize Tasks");
-            System.out.println("6. Adjust tasks");
-            System.out.println("7. Exit");
-            System.out.print("Choose an option: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
-
+            printMenu();
+            int choice = getIntInput("Choose an option: ");
             // runs method based on choice
             switch (choice) {
-                case 1:
-                    addCourse();
-                    break;
-                case 2:
-                    addTask();
-                    break;
-                case 3:
-                    viewTasks();
-                    break;
-                case 4:
-                    viewFilteredTasks();
-                    break;
-                case 5:
-                    prioritizeTasks();
-                    break;
-                case 6:
-                    adjustTasks();
-                    break;
-                case 7:
+                case 1 -> addCourse();
+                case 2 -> addTask();
+                case 3 -> viewTasks();
+                case 4 -> viewFilteredTasks();
+                case 5 -> prioritizeTasks();
+                case 6 -> adjustTasks();
+                case 7 -> markTaskCompletion();
+                case 8 -> {
                     System.out.println("Exiting.");
                     return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
-    // addCourse method
+    /**
+     * Prints student planner menu
+     * print statements
+    */
+    private void printMenu() {
+        System.out.println("\nStudent Planner:");
+        System.out.println("1. Add Course");
+        System.out.println("2. Add Task");
+        System.out.println("3. View Tasks");
+        System.out.println("4. View Filtered Tasks");
+        System.out.println("5. Prioritize Tasks");
+        System.out.println("6. Adjust Task");
+        System.out.println("7. Mark Task as Complete/Incomplete");
+        System.out.println("8. Exit");
+    }
+    
+    /**
+     * Handles add course
+     * user input
+    */
     private void addCourse() {
-        // get user input
-        System.out.print("Enter course code: ");
-        String code = scanner.nextLine();
-        Course course = new Course(code);
-        // adds course
-        manager.addCourse(course);
-        // confirmation message
-        System.out.println("Course added: " + course);
+        String code = getStringInput("Enter course code: ");
+        manager.addCourse(new Course(code));
+        System.out.println("Course added: " + code);
     }
 
-    // addTask method
+    /**
+     * Handles add task
+     * user input
+    */
     private void addTask() {
-        // get course by input
-        System.out.print("Enter course code: ");
-        String courseCode = scanner.nextLine();
-        Course course = manager.getCourseByCode(courseCode);
-        // if course code does not exist
-        if (course == null) {
-            System.out.println("Course not found!");
-            return;
-        }
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
 
-        // get user inputs
-        System.out.print("Enter task name: ");
-        String taskName = scanner.nextLine();
-
-        System.out.print("Enter due date (YYYY-MM-DD HH:MM): ");
-        String dueDateStr = scanner.nextLine();
-        LocalDateTime dueDate = LocalDateTime.parse(dueDateStr.replace(" ", "T"));
-
-        System.out.print("Enter priority (LOW, MEDIUM, HIGH): ");
-        String priorityStr = scanner.nextLine();
-        Priority priority = Priority.valueOf(priorityStr.toUpperCase());
-
-        System.out.print("Select task type (1. Homework, 2. Project, 3. Test): ");
-        int taskType = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+        // get task and its properties from user
+        String taskName = getStringInput("Enter task name: ");
+        LocalDateTime dueDate = LocalDateTime.parse(getStringInput("Enter due date (YYYY-MM-DD HH:MM): ").replace(" ", "T"));
+        Priority priority = Priority.valueOf(getStringInput("Enter priority (LOW, MEDIUM, HIGH): ").toUpperCase());
+        int taskType = getIntInput("Select task type (1. Homework, 2. Project, 3. Test): ");
 
         // creates task based on type
-        Task task = null;
-        if (taskType == 1) {
-            System.out.print("Enter total number of problems: ");
-            int problemCount = scanner.nextInt();
-            task = new Homework(taskName, dueDate, priority, problemCount);
-        }
-        else if (taskType == 2) {
-            task = new Project(taskName, dueDate, priority);
-        }
-        else if (taskType == 3) {
-            task = new Test(taskName, dueDate, priority);
-        }
+        Task task = switch (taskType) {
+            case 1 -> new Homework(taskName, dueDate, priority, getIntInput("Enter total number of problems: "));
+            case 2 -> new Project(taskName, dueDate, priority);
+            case 3 -> new Test(taskName, dueDate, priority);
+            default -> null;
+        };
 
         // confirmation message
         if (task != null) {
@@ -130,173 +102,197 @@ public class InteractiveSystem {
         }
     }
 
-    // viewTasks method
+    /**
+     * Prints all task from course
+     * user input
+    */
     private void viewTasks() {
-        // get course by input
-        System.out.print("Enter course code: ");
-        String courseCode = scanner.nextLine();
-        Course course = manager.getCourseByCode(courseCode);
-        // if course code does not exist
-        if (course == null) {
-            System.out.println("Course not found!");
-            return;
-        }
-
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
+        
         // prints all tasks in course
         System.out.println("\nTasks for Course: " + course.getCode());
         for (Task task : course.getTasks()) {
             System.out.println(task.getSummary());
         }
     }
-
-    // viewFilteredTasks method
+    
+    /**
+     * Prints all filtered tasks from course
+     * user input
+    */
     private void viewFilteredTasks() {
-        // get course by input
-        System.out.print("Enter course code: ");
-        String courseCode = scanner.nextLine();
-        Course course = manager.getCourseByCode(courseCode);
-        // if course code does not exist
-        if (course == null) {
-            System.out.println("Course not found!");
-            return;
-        }
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
 
-        // get user inputs
-        System.out.print("Enter date (YYYY-MM-DD HH:MM or press Enter to skip): ");
-        String dueDateStr = scanner.nextLine();
+        // get filters from user
+        String dueDateStr = getStringInput("Enter date (YYYY-MM-DD HH:MM or press Enter to skip): ");
         LocalDateTime dueDate = dueDateStr.isEmpty() ? null : LocalDateTime.parse(dueDateStr.replace(" ", "T"));
 
-        System.out.print("Enter priority (LOW, MEDIUM, HIGH or press Enter to skip): ");
-        String priorityStr = scanner.nextLine();
+        String priorityStr = getStringInput("Enter priority (LOW, MEDIUM, HIGH or press Enter to skip): ");
         Priority priority = priorityStr.isEmpty() ? null : Priority.valueOf(priorityStr.toUpperCase());
 
-        System.out.print("Enter completion status (true/false or press Enter to skip): ");
-        String isCompletedStr = scanner.nextLine();
+        String isCompletedStr = getStringInput("Enter completion status (true/false or press Enter to skip): ");
         boolean isCompleted = isCompletedStr.isEmpty() ? false : Boolean.parseBoolean(isCompletedStr);
-
-        // get filtered tasks
-        List<Task> filteredTasks = manager.filterTasks(courseCode, dueDate, priority, isCompleted);
-
-        // confirmation message
+        
+        // print filtered tasks
+        List<Task> filteredTasks = manager.filterTasks(course.getCode(), dueDate, priority, isCompleted);
         if (filteredTasks.isEmpty()) {
             System.out.println("No matching tasks found.");
         }
         else {
-            System.out.println("\n" + filteredTasks.size() + " task(s) found matching the criteria:");
-            // prints filtered tasks
+            System.out.println("\n" + filteredTasks.size() + " task(s) found:");
             for (Task task : filteredTasks) {
                 System.out.println(task.getSummary());
             }
         }
     }
 
-    // prioritizeTasks method
+    /**
+     * Prints automatically prioritized tasks
+     * user input
+    */
     private void prioritizeTasks() {
-        // get course by input
-        System.out.print("Enter course code: ");
-        String courseCode = scanner.nextLine();
-        Course course = manager.getCourseByCode(courseCode);
-        // if course code does not exist
-        if (course == null) {
-            System.out.println("Course not found!");
-            return;
-        }
-
-        // prioritizes tasks
-        System.out.println("\nPrioritizing tasks...");
-        List<Task> prioritizedTasks = manager.getNewPrioritizedTasks(courseCode);
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
 
         // prints newly prioritized tasks
+        List<Task> prioritizedTasks = manager.getNewPrioritizedTasks(course.getCode());
         System.out.println("\nPrioritized Tasks:");
         for (Task task : prioritizedTasks) {
             System.out.println(task.getSummary());
         }
     }
 
-    // adjustTasks method
+    /**
+     * Handles adjust task
+     * user input
+    */
     private void adjustTasks() {
-        // get course by input
-        System.out.print("Enter course code: ");
-        String courseCode = scanner.nextLine();
-        Course course = manager.getCourseByCode(courseCode);
-        // if course does not exist
-        if (course == null) {
-            System.out.println("Course not found!");
-            return;
-        }
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
 
-        // get task by input
-        System.out.print("Enter task name: ");
-        String taskName = scanner.nextLine();
+        // get task from user
+        String taskName = getStringInput("Enter task name: ");
         Task task = course.getTaskByName(taskName);
-        // if task does not exist
         if (task == null) {
             System.out.println("Task not found!");
             return;
         }
 
-        // adjust task based on its type
-        // if Homework
-        if (task instanceof Homework) {
-            System.out.print("Enter the number of problems solved: ");
-            int numSolved = scanner.nextInt();
-            ((Homework)task).markSolved(numSolved);
+        // special adjustments: homework
+        if (task instanceof Homework homework) {
+            homework.markSolved(getIntInput("Enter the number of problems solved: "));
         }
-        // if Project
-        else if (task instanceof Project) {
-            while(true) {
-                // get group member name
-                System.out.print("Enter group member name (or press Enter to exit): ");
-                String groupMember = scanner.nextLine();
-                if (groupMember.isEmpty()) {
-                    return;
-                }
+        // special adjustments: project
+        else if (task instanceof Project project) {
+            while (true) {
+                String member = getStringInput("Enter group member name (or press Enter to exit): ");
+                if (member.isEmpty()) break;
+                int choice = getIntInput("1. add, 2. remove: ");
 
-                // get choice to add or remove member
-                System.out.print("1. add, 2. remove: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                // runs based on choice
-                switch (choice) {
-                    case 1:
-                        ((Project)task).addMember(groupMember);
-                        break;
-                    case 2:
-                        ((Project)task).removeMember(groupMember);
-                        break;
-                    default:
-                        System.out.println("Invalid input.");
-                }
+                if (choice == 1) project.addMember(member);
+                else if (choice == 2) project.removeMember(member);
+                else System.out.println("Invalid input.");
             }
         }
-        // if Test
-        else if (task instanceof Test) {
-            while(true) {
-                // get lesson name
-                System.out.print("Enter lesson name (or press Enter to exit): ");
-                String lesson = scanner.nextLine();
-                if (lesson.isEmpty()) {
-                    return;
-                }
+        // special adjustments: test
+        else if (task instanceof Test test) {
+            while (true) {
+                String lesson = getStringInput("Enter lesson name (or press Enter to exit): ");
+                if (lesson.isEmpty()) break;
+                int choice = getIntInput("1. add, 2. remove: ");
 
-                // get choice to add or remove
-                System.out.print("1. add, 2. remove: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                // runs based on choice
-                switch (choice) {
-                    case 1:
-                        ((Test)task).addLesson(lesson);
-                        break;
-                    case 2:
-                        ((Test)task).removeLesson(lesson);
-                        break;
-                    default:
-                        System.out.println("Invalid input.");
-                }
+                if (choice == 1) test.addLesson(lesson);
+                else if (choice == 2) test.removeLesson(lesson);
+                else System.out.println("Invalid input.");
             }
         }
+    }
+
+    /**
+     * Handles marking task as complete
+     * user input
+    */
+    private void markTaskCompletion() {
+        // get course from user
+        Course course = getCourseFromUser();
+        if (course == null) return;
+
+        // get task from user
+        String taskName = getStringInput("Enter task name: ");
+        Task task = course.getTaskByName(taskName);
+        if (task == null) {
+            System.out.println("Task not found!");
+            return;
+        }
+
+        // marks task as complete/incomplete
+        int choice = getIntInput("1. Mark as complete, 2. Mark as incomplete: ");
+        if (choice == 1) {
+            task.markComplete();
+            System.out.println("Marked as complete.");
+        }
+        else if (choice == 2) {
+            task.markIncomplete();
+            System.out.println("Marked as incomplete.");
+        }
+        else {
+            System.out.println("Invalid choice.");
+        }
+    }
+
+    /**
+     * Gets string input from user
+     * helper method
+     * @param prompt prompt message
+     * @return string user input
+    */
+    private String getStringInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    /**
+     * Gets int input from user
+     * helper method
+     * @param prompt prompt message
+     * @return int user input
+    */
+    private int getIntInput(String prompt) {
+        System.out.print(prompt);
+
+        // ensures the user enters a valid integer
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input. " + prompt);
+            scanner.next();
+        }
+
+        // return inputted int
+        int value = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+        return value;
+    }
+
+    /**
+     * Gets course by inputted code from user
+     * helper method
+     * @return course by code
+    */
+    private Course getCourseFromUser() {
+        // get user input
+        String courseCode = getStringInput("Enter course code: ");
+        Course course = manager.getCourseByCode(courseCode);
+
+        // if course code does not exist
+        if (course == null) {
+            System.out.println("Course not found!");
+        }
+
+        return course;
     }
 }
