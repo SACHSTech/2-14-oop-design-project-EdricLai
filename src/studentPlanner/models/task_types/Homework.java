@@ -37,6 +37,7 @@ public class Homework extends Task {
         problemsSolved += numSolved;
         if (problemsSolved >= problemCount) {
             problemsSolved = problemCount;
+            super.markComplete();
         }
     }
 
