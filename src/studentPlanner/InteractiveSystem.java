@@ -115,6 +115,7 @@ public class InteractiveSystem {
         System.out.println("\nTasks for Course: " + course.getCode());
         for (Task task : course.getTasks()) {
             System.out.println(task.getSummary());
+            printDivider();
         }
     }
     
@@ -146,6 +147,7 @@ public class InteractiveSystem {
             System.out.println("\n" + filteredTasks.size() + " task(s) found:");
             for (Task task : filteredTasks) {
                 System.out.println(task.getSummary());
+                printDivider();
             }
         }
     }
@@ -164,6 +166,7 @@ public class InteractiveSystem {
         System.out.println("\nPrioritized Tasks:");
         for (Task task : prioritizedTasks) {
             System.out.println(task.getSummary());
+            printDivider();
         }
     }
 
@@ -213,7 +216,7 @@ public class InteractiveSystem {
             }
         }
     }
-
+    
     /**
      * Handles marking task as complete
      * user input
@@ -294,5 +297,16 @@ public class InteractiveSystem {
         }
 
         return course;
+    }
+
+    /**
+     * Prints divider
+     * helper method
+    */
+    private void printDivider() {
+        for (int i = 0; i < 80; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
     }
 }
